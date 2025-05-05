@@ -1,10 +1,3 @@
-from math import trunc
-
-tape = "ABBACA" #A, B, C
-
-currentState = "1" #1, 2, 3
-currentPoint = "0"
-
 def change(a, b):
     if a+b < 0: return 0;
     return a+b
@@ -13,13 +6,14 @@ class TuringMachine:
     def __init__(self):
         self.state = "1" #0, 1, 2
         self.point = 0
-        self.tape = "ABCCABBCAABCBABCBABCBBABCBACACBCABACBACBCA" #A, B, C
+        self.tape = list("ABA") #A, B, C
 
     def runA(self):
         print("A runned")
         if self.state == "0":
             return "stop"
         elif self.state == "1":
+            self.tape[self.point] = "B"
             self.point = change(self.point, 1)
             self.state = "2"
         elif self.state == "2":
@@ -30,11 +24,13 @@ class TuringMachine:
     def runB(self):
         print("B runned")
         if self.state == "0":
+            self.tape[self.point] = "C"
             self.point = change(self.point, -1)
         elif self.state == "1":
             self.point = change(self.point, -1)
             self.state = "2"
         elif self.state == "2":
+            self.tape[self.point] = "A"
             self.point = change(self.point, 0)
             self.state = "0"
         return "go"
@@ -42,12 +38,12 @@ class TuringMachine:
     def runC(self):
         print("C runned")
         if self.state == "0":
+            self.tape[self.point] = "A"
             self.state = "2"
         elif self.state == "1":
             self.point = change(self.point, 1)
         elif self.state == "2":
-            self.point = change(self.point, -1)
-            self.state = "1"
+            return "stop"
         return "go"
 
     def run(self):
