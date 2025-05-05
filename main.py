@@ -13,7 +13,7 @@ class TuringMachine:
     def __init__(self):
         self.state = "1" #0, 1, 2
         self.point = 0
-        self.tape = "ABC" #A, B, C
+        self.tape = "ABCCABBCAABCBABCBABCBBABCBACACBCABACBACBCA" #A, B, C
 
     def runA(self):
         print("A runned")
@@ -21,30 +21,33 @@ class TuringMachine:
             return "stop"
         elif self.state == "1":
             self.point = change(self.point, 1)
+            self.state = "2"
         elif self.state == "2":
-            return "stop"
+            self.point = change(self.point, -1)
+            self.state = "0"
         return "go"
 
     def runB(self):
         print("B runned")
         if self.state == "0":
-            return "stop"
+            self.point = change(self.point, -1)
         elif self.state == "1":
-            self.point = change(self.point, 1)
+            self.point = change(self.point, -1)
             self.state = "2"
         elif self.state == "2":
-            return "stop"
+            self.point = change(self.point, 0)
+            self.state = "0"
         return "go"
 
     def runC(self):
         print("C runned")
         if self.state == "0":
-            return "stop"
+            self.state = "2"
         elif self.state == "1":
             self.point = change(self.point, 1)
         elif self.state == "2":
-            print("s")
-            return "stop"
+            self.point = change(self.point, -1)
+            self.state = "1"
         return "go"
 
     def run(self):
@@ -63,4 +66,7 @@ class TuringMachine:
 
 tr = TuringMachine()
 tr.run()
+print("current state: ", tr.state)
+print("current point: ", tr.point)
+print("current tape: ", tr.tape)
 
